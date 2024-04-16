@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Managing Drug Shortages</title>
+		<meta name="author" content="name">
+    <meta name="description" content="description here">
+		<meta name="keywords" content="keywords,here">
+		    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/> <!--Replace with your tailwind.css once created-->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" rel="stylesheet">
+	<style>
+	.smooth {transition: box-shadow 0.3s ease-in-out;}
+	::selection{background-color: aliceblue}
+	</style>
+	<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-300 font-sans leading-normal tracking-normal">
+
+	<!--Nav-->
+	<nav class="bg-gray-900 p-4 mt-0 w-full">
+        <div class="container flex items-center">
+			<div class="flex pl-4 text-sm">
+				<ul class="list-reset flex justify-between flex-1 items-center">
+					<li class="mr-2">
+						<a class="inline-block text-gray-400 no-underline hover:text-gray-200 hover:text-underline py-2 px-2" href="index.html">Home</a>
+					  </li>
+				  <li class="mr-2">
+					<a class="inline-block text-gray-400 no-underline hover:text-gray-200 hover:text-underline py-2 px-2" href="dashboard.html">Dashboard</a>
+				  </li>
+				  <li class="mr-2">
+					<a class="inline-block text-gray-400 no-underline hover:text-gray-200 hover:text-underline py-2 px-2" href="detail.html">Drug Details</a>
+				</li>
+				<li class="mr-2">
+					<a class="inline-block text-gray-300 no-underline hover:text-gray-200 hover:underline py-2 px-2" href="model.html">Model Details</a>
+				</li>
+				</ul>
+			</div>
+        </div>
+	</nav>	
+	
+	<!--Title-->
+	<div class="ml-14" style="padding-top: 2rem;">
+		<h1 class="font-bold break-normal text-2xl">Drug Information</h1>
+	</div>
+
+	<div class="flex">
+		<div class="flex-col ml-10 w-full flex">		
+
+			<div class="flex-col mt-8 mb-2 mt-4 bg-white ml-4 w-4/5 rounded-md">
+				<div class="flex-col w-full p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal items-center shrink-0 grow-1 rounded" style="font-family:Georgia,serif; padding: 1rem;">
+					<form>
+						{% for _,item in items.iterrows() %}
+							<table class="table-fixed min-w-full text-left text-sm font-light">						
+								<tbody id="search-results">	
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">NDC</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.ndc}}</TD>
+									</TR>
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Shortage Probability</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.probability}}</TD>
+									</TR>
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Brand Name</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.brand_name}}</TD>
+									</TR>
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Manufacturer</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.labeler_name}}</TD>
+									</TR>
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Marketing Category</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.marketing_category}}</TD>
+									</TR>
+									<TR class="border-b divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Product Type</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.product_type}}</TD>
+									</TR>
+									<TR class="divide-x dark:border-neutral-500">
+										<TD class="whitespace-nowrap px-6 py-2 font-medium font-bold w-2/12">Application Number</TD>
+										<TD class="whitespace-nowrap px-6 py-2 font-medium w-10/12">{{item.application_number}}</TD>
+									</TR>
+								</tbody>
+							</table>
+						{% endfor %}
+					</form>
+				</div>	
+			</div>
+		</div>
+	</div>
+
+	<div class="ml-14" style="padding-top: 2rem;">
+		<h1 class="font-bold break-normal text-2xl">Shortage History</h1>
+	</div>
+
+	<div class="flex">
+		<div class="flex-col ml-10 w-full flex">		
+			<div class="flex-col mt-8 mb-2 mt-4 bg-white ml-4 w-4/5 rounded-md">
+				<div class="flex-col w-1/2 p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal items-center shrink-0 grow-1 rounded" style="font-family:Georgia,serif; padding: 1rem;">
+					<table class="table-fixed min-w-full text-left text-sm font-light">						
+						<thead class="border-b font-medium bg-gray-300">
+							<tr>
+								<th scope="col" class="px-6 py-1">Month</th>
+								<th scope="col" class="px-6 py-1">Shortage</th>
+							</tr>
+						</thead>
+						<tbody id="search-results">	
+							{% for _,item in shortage_data.iterrows() %}
+								<tr class="even:bg-gray-100 odd:bg-white">
+									<td class="px-6 py-2 font-medium w-1/12 border text-nowrap">{{item.date.strftime("%m-%d-%Y")}}</td>
+									{% if item.shortage_indicator == 1: %}
+										<td class="px-6 py-2 font-medium w-1/12 border text-nowrap bg-red-200">Shortage</td>
+									{% else: %}
+										<td class="px-6 py-2 font-medium w-1/12 border text-nowrap bg-green-200"></td>
+									{% endif %}
+								</tr>								
+							{% endfor %}
+						</tbody>					
+					</table>	
+				</div>			
+				<div class="flex-col w-full p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal items-center shrink-0 grow-1 rounded" style="font-family:Georgia,serif; padding: 1rem;">						
+				</div>					
+			</div>
+		</div>
+	</div>
+
+	<div class="ml-14" style="padding-top: 2rem;">
+		<h1 class="font-bold break-normal text-2xl">Similar Drugs</h1>
+	</div>
+
+	<div class="flex">
+		<div class="flex-col ml-10 w-full flex">		
+
+			<div class="flex-col mt-8 mb-2 mt-4 bg-white ml-4 w-4/5 rounded-md">
+				<div class="pl-4 text-sm start-jusitfy pt-4">Active Ingredients<br>
+					<ul class="list-disc pl-4 pt-2 text-gray-500 ">
+						{% for item in active_ingredients %}
+							<li>{{item[0]}} - {{item[1]}}</li>
+						{% endfor %}					 
+					</ul>					
+				</div>
+				<div class="flex-col w-full p-8 md:p-24 text-xl md:text-2xl text-gray-800 leading-normal items-center shrink-0 grow-1 rounded" style="font-family:Georgia,serif; padding: 1rem;">						
+					<table class="table-fixed min-w-full text-left text-sm font-light">						
+						<thead class="border-b font-medium bg-gray-300">
+							<tr>
+								<th scope="col" class="px-6 py-1">NDC</th>
+								<th scope="col" class="px-6 py-1">Shortage Probability</th>
+								<th scope="col" class="px-6 py-1">Brand Name</th>
+								<th scope="col" class="px-6 py-1">Manufacturer</th>
+							</tr>
+						</thead>
+						<tbody id="search-results">	
+							{% for _,item in similar_drugs.iterrows() %}
+								<TR class="even:bg-gray-100 odd:bg-white">
+									<TD class="px-6 py-2 font-medium hover:underline w-1/12 border text-nowrap"><a href="drug.html?id={{item.ndc}}">{{item.ndc}}</a></TD>
+									<TD class="px-6 py-2 font-medium w-1/12 border text-nowrap">{{item.probability|round(4)}}</TD>
+									<TD class="px-6 py-2 font-medium w-6/12 border text-wrap">{{item.brand_name}}</TD>
+									<TD class="px-6 py-2 font-medium w-4/12 border text-nowrap">{{item.labeler_name}}</TD>
+								</TR>							
+							{% endfor %}
+						</tbody>					
+					</table>
+				</div>					
+			</div>
+		</div>
+	</div>
+
+	<div style="margin-top: 2rem;"></div>
+	<footer class="bg-gray-900">	
+		<div class="container max-w-6xl mx-auto flex items-center px-2 py-8">
+			<div class="w-full mx-auto flex flex-wrap items-center">
+				<div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-extrabold">
+				</div>
+				<div class="flex w-full pt-2 content-center justify-between md:w-1/2 md:justify-end">
+					<ul class="list-reset flex justify-center flex-1 md:flex-none items-center">
+						<li class="mr-2">
+							<a class="inline-block text-gray-300 no-underline hover:text-gray-200 hover:underline py-2 px-2" href="data.html">Data</a>
+						</li>
+						<li class="mr-2">
+							<a class="inline-block text-gray-300 no-underline hover:text-gray-200 hover:underline py-2 px-2" href="team.html">Team</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</body>
+</html>
